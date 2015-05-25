@@ -1,9 +1,12 @@
 require 'sinatra'
-require "sinatra/reloader" if development?
 
 get '/' do
   title = "StudyMate::Home"
   erb :home, :locals => {:title => title}
+end
+
+get '/about' do
+  erb :about, :locals => {:title => "StudyMata :: About"}
 end
 
 __END__
@@ -20,6 +23,7 @@ __END__
     <nav>
       <ul>
         <li><a href="/" title="Home">Home</a></li>
+        <li><a href="/about" title="About">About</a></li>
       </ul>
     </nav>
   </header>
@@ -30,3 +34,6 @@ __END__
 </html>
 @@home
 <p>Welcome to StudyMate, solution to your reference woo</p>
+
+@@about
+<p>This site was created by me to learn sinatra</p>
