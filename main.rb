@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'slim'
 
+get('/styles.css') { scss :styles }
+
 get '/' do
   title = "StudyMate::Home"
   slim :home, :locals => {:title => title}
