@@ -1,5 +1,7 @@
 require 'sinatra'
+require "sinatra/reloader" if development?
 require 'slim'
+require './track'
 
 get('/styles.css') { scss :styles }
 
@@ -15,4 +17,3 @@ end
 not_found do
   slim :not_found
 end
-

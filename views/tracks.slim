@@ -1,0 +1,11 @@
+h1 Tracks
+a href='/tracks/new' Create a new track
+
+- if @tracks.any?
+  ul#tracks
+    -@tracks.each do |track|
+      li
+        a href="/tracks/#{track.id}" #{track.name}
+- else
+  p No tracks have been created
+
