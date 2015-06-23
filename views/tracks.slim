@@ -5,7 +5,7 @@ a href='/tracks/new' Create a new track
   ul#tracks
     -@tracks.each do |track|
       li
-        a href="/tracks/#{track.id}" #{track.name}
+        a href="/track/#{track.id}" #{track.name}
 - else
   p No tracks have been created
 

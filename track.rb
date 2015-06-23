@@ -9,15 +9,19 @@ get '/tracks/new' do
   slim :new_track
 end
 
-post 'tracks/new' do
-  @track = Track.create(params[:track])
-  redirect to("/songs/#@track.id")
+post '/tracks/new' do
+  track = Track.create(params[:track])
+  redirect to("/track/#{track.id}")
 end
 
-get '/tracks/:id' do 
+get '/track/:id' do 
   @track = Track.get(params[:id])
-  puts @track.name
+  puts @track.inspect
   slim :track_page
 end
 
-
+delete '/track/:id' do
+  @track = Track.get(params[:id])
+  @track.destroy
+  redirect to("/tracks")
+end

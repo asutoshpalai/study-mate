@@ -4,7 +4,8 @@ p About:
   pre #{ @track.description }
 p <a href="/tracks">Back to track listing</a>
 p 
-  a href="/songs/#{@track.id}/edit" Edit the details
+  a href="/track/#{@track.id}/edit" Edit the details
 
-form action="/songs/#{@track.id}" method="DELETE"
-  input type="submit" value="Delete this song"
+form action="/track/#{@track.id}" method="post"
+  input type="hidden" name="_method" value="DELETE"
+  input type="submit" value="Delete this track"
