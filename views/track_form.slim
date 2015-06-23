@@ -1,5 +1,5 @@
 label for="name" Name:
 input#name type="text" name="track[name]" value="#{@track ? @track.name : "" }"
 label for="description" Description:
-textarea#desc name="track[description]" == @track? track.description : "" 
+textarea#desc name="track[description]" == @track? @track.description : "" 
 input type="submit" value="Save"

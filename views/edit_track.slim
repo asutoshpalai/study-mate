@@ -1,0 +1,5 @@
+h2 Edit: == @track.name
+
+form method="POST" action="/track/#{@track.id}"
+  input type="hidden" name="_method" value="PUT"
+  == slim :track_form

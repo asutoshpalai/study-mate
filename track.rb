@@ -25,3 +25,14 @@ delete '/track/:id' do
   @track.destroy
   redirect to("/tracks")
 end
+
+get '/track/:id/edit' do
+  @track = Track.get(params[:id])
+  slim :edit_track
+end
+
+put'/track/:id' do
+  track = Track.get(params[:id])
+  track.update(params[:track])
+  redirect to("/track/#{track.id}")
+end
