@@ -49,8 +49,17 @@ header h1 {
 nav {
   @include tabs ($background: $black, $color: $white);
   font-weight: bold;
+
+  a#status {
+    float: right;
+  }
+
 }
 
 p {
   font: 13px/1.4 $main-font;
+}
+
+label {
+  display: block;
 }
