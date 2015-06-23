@@ -2,14 +2,9 @@ require 'sinatra'
 require "sinatra/reloader" if development?
 require 'slim'
 require 'sinatra/flash'
+require './auth/auth'
 require './track'
 
-
-configure do
-  enable :sessions
-  set :username, 'admin'
-  set :password, 'sinatra'
-end
 
 helpers do
   def css(*stylesheets)
@@ -36,22 +31,4 @@ end
 
 not_found do
   slim :not_found
-end
-
-get '/login' do
-  slim :login
-end
-
-post '/login' do
-  if params[:username] = settings.username && params[:password] === settings.password
-    session[:admin] = true
-    redirect to('/tracks')
-  else
-    slim :login
-  end
-end
-
-get '/logout' do
-  session.clear
-  redirect to('/')
 end

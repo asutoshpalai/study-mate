@@ -24,12 +24,12 @@ get '/tracks' do
 end
 
 get '/tracks/new' do
-  halt(401,'Not Authorized') unless session[:admin]
+  protected!
   slim :new_track
 end
 
 post '/tracks/new' do
-  halt(401,'Not Authorized') unless session[:admin]
+  protected!
   flash[:notice] = "Track created sucessfully" if create_track
   redirect to("/track/#{@track.id}")
 end
@@ -40,7 +40,7 @@ get '/track/:id' do
 end
 
 delete '/track/:id' do
-  halt(401,'Not Authorized') unless session[:admin]
+  protected!
   if find_track.destroy
     flash[:notice] = "Track deleted"
   end
@@ -48,13 +48,13 @@ delete '/track/:id' do
 end
 
 get '/track/:id/edit' do
-  halt(401,'Not Authorized') unless session[:admin]
+  protected!
   @track = find_track
   slim :edit_track
 end
 
 put'/track/:id' do
-  halt(401,'Not Authorized') unless session[:admin]
+  protected!
   track = find_track
   if track.update(params[:track])
     flash[:notice] = "Track updated successfully"
