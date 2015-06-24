@@ -2,6 +2,8 @@ require 'sinatra'
 require "sinatra/reloader" if development?
 require 'slim'
 require 'sinatra/flash'
+require 'v8'
+require 'coffee-script'
 require './auth/auth'
 require './track'
 
@@ -19,6 +21,7 @@ helpers do
 end
 
 get('/styles.css') { scss :styles }
+get('/javascripts/application.js') { coffee :application }
 
 get '/' do
   title = "StudyMate::Home"
