@@ -1,24 +1,28 @@
 h2 = @track.name
 
-p About: 
-  pre #{ @track.description }
-p <a href="/tracks">Back to track listing</a>
-p 
-  a href="/track/#{@track.id}/edit" Edit the details
+.left#details
+  p About:
+    pre #{ @track.description }
+  p <a href="/tracks">Back to track listing</a>
+  p
+    a href="/track/#{@track.id}/edit" Edit the details
 
-form action="/track/#{@track.id}" method="post"
-  input type="hidden" name="_method" value="DELETE"
-  input type="submit" value="Delete this track"
+  form action="/track/#{@track.id}" method="post"
+    input type="hidden" name="_method" value="DELETE"
+    input type="submit" value="Delete this track"
 
 
 #msgs-container
-  -if @track.msgs.any?
-    ol#msgs
-      - @track.msgs.each do |msg|
-        li.msg == msg.msg
-  - else
-    p No msgs in the track
+  #msgs
+    -if @track.msgs.any?
+      ol
+        - @track.msgs.each do |msg|
+          li
+            - @msg = msg
+            == slim :msg
+    - else
+      p No msgs in the track
 
-form#createpost action="/track/#{@track.id}/post" method="post"
-  textarea#postbox name="msg"
-  input type="submit" value="post"
+  form#createpost action="/track/#{@track.id}/post" method="post"
+    textarea#postbox name="msg"
+    input type="submit" value="post"

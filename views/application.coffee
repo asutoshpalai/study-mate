@@ -7,13 +7,13 @@ $ ->
       form.attr('action')
       form.serialize()
       (data) ->
-        if (data == "true")
-          if (!$('#msgs').length)
-            $('#msgs-container').html(
-              '<ol id="msgs"></ol>'
+        if (data != "failed")
+          if (!$('#msgs ol').length)
+            $('#msgs').html(
+              '<ol></ol>'
             )
-          $('#msgs').append(
-            '<li class = "msg">' + msg + '</li>'
+          $('#msgs ol').append(
+            '<li>' + data + '</li>'
           )
 
 

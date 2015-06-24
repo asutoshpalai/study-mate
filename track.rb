@@ -66,8 +66,9 @@ get '/track/:id/edit' do
 end
 
 post '/track/:id/post' do
-  if Msgs.create(:tid => params[:id], :msg => params[:msg])
-    return "true"
+  @msg = Msgs.create(:tid => params[:id], :msg => params[:msg])
+  if @msg
+    slim :msg, :layout => false
   else
     return "failed"
   end

@@ -2,6 +2,7 @@ $red: #903;
 $black: #444;
 $white: #fff;
 $main-font: Helvetica, Arial, sans-serif;
+$main-background: #777;
 
 body {
   font-family: $main-font;
@@ -12,6 +13,14 @@ h1 {
   font: 32px/1 $main-font;
 }
 
+h2 {
+  color: lighten($red, 10%);
+  font: 28px/1 $main-font;
+}
+ol {
+  list-style-type: circle;
+
+}
 header h1 {
   font-size: 40px;
   line-height: 80px;
@@ -77,4 +86,62 @@ label {
   background: lighten($red, 60%);
   color: $red;
   border: 1px solid $red;
+}
+
+.main {
+  max-width: 80%;
+  margin: 10px auto;
+  padding: 20px 30px;
+  background: $main-background;
+
+  h2 {
+    padding: 5px;
+    text-align: center;
+    background: darken($main-background, 10%);
+  }
+
+  &::after {
+    content: " ";
+    display: block;
+    clear: both;
+  }
+}
+.left {
+  float: left;
+  max-width: 15%;
+}
+
+#msgs-container {
+  float: left;
+  width: 80%;
+  margin-left: 10px;
+
+  #msgs {
+    border: solid $black 5px;
+  }
+
+  ol {
+    padding-left: 20px;
+
+    li {
+      margin-top: 10px;
+    }
+  }
+
+  form{
+
+    padding: 15px;
+    textarea {
+      width: 100%;
+      border: none;
+      resize: none;
+      border-radius: 5px;
+    }
+
+    input[type="submit"] {
+      border: none;
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+  }
 }
