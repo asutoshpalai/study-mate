@@ -33,6 +33,19 @@ module TrackHelpers
     Files.all(:tid => id)
   end
 
+  def get_file(tid = nil, filename = nil)
+
+    if not tid
+      tid = params[:id]
+    end
+
+    if not filename
+      filename = params[:filename]
+    end
+
+    Files.all(:tid => tid, :name => filename)[0]
+  end
+
 end
 
 helpers TrackHelpers
@@ -98,6 +111,12 @@ post '/track/:id/file' do
     return "failed"
   end
 end
+
+get '/track/:id/file/:filename' do
+  @file = get_file
+  send_file 'uploads/' + @file.sha1
+end
+
 
 put'/track/:id' do
   protected!
