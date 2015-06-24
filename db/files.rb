@@ -1,12 +1,11 @@
 require 'dm-core'
 require 'dm-migrations'
 
-class Track
+class Files
   include DataMapper::Resource
-  attr_accessor :msgs, :files
   property :id, Serial
-  property :name, String, :unique => true
-  property :description, Text
+  property :tid, Integer
+  property :name, String, :unique => :tid
+  property :sha1, String
   property :created_at, DateTime, :default => DateTime.now
-
 end

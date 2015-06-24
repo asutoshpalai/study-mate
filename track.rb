@@ -1,5 +1,7 @@
+require 'digest'
 require './db/track'
 require './db/msgs'
+require './db/files'
 
 module TrackHelpers
 
@@ -21,6 +23,14 @@ module TrackHelpers
     end
 
     Msgs.all(:tid => id)
+  end
+
+  def get_files(id = nil)
+    if not id
+      id = params[:id]
+    end
+
+    Files.all(:tid => id)
   end
 
 end
@@ -46,8 +56,8 @@ end
 get '/track/:id' do 
   @track = find_track
   puts find_track
-  puts @track
   @track.msgs = get_msgs
+  @track.files = get_files
   slim :track_page
 end
 
@@ -69,6 +79,21 @@ post '/track/:id/post' do
   @msg = Msgs.create(:tid => params[:id], :msg => params[:msg])
   if @msg
     slim :msg, :layout => false
+  else
+    return "failed"
+  end
+end
+
+post '/track/:id/file' do
+  file = params[:file]
+  sha1 = Digest::SHA1.file(file[:tempfile]).hexdigest
+  File.open('uploads/' + sha1, 'w') do |f|
+    f.write(file[:tempfile].read)
+  end
+  @file = Files.create(:tid => params[:id], :name => file[:filename], :sha1 => sha1)
+  if @file
+    @track = find_track
+    slim :file, :layout => false
   else
     return "failed"
   end

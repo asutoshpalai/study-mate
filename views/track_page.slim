@@ -26,3 +26,15 @@ h2 = @track.name
   form#createpost action="/track/#{@track.id}/post" method="post"
     textarea#postbox name="msg"
     input type="submit" value="post"
+
+#file-container
+  #files
+    -if @track.files.any?
+      ol
+        - @track.files.each do |file|
+          li
+            - @file = file
+            == slim :file
+  form#fileupload action="/track/#{@track.id}/file" method="post" enctype="multipart/form-data"
+    input type="file" name="file"
+    input type="submit" value="Upload!"
