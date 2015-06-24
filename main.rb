@@ -8,6 +8,12 @@ require './auth/auth'
 require './track'
 
 
+configure do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+  DataMapper.finalize
+
+end
+
 helpers do
   def css(*stylesheets)
     stylesheets.map do |stylesheet|

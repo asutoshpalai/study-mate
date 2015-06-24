@@ -1,4 +1,5 @@
 require './db/track'
+require './db/msgs'
 
 module TrackHelpers
 
@@ -13,7 +14,15 @@ module TrackHelpers
   def create_track
     @track = Track.create(params[:track])
   end
-  
+
+  def get_msgs(id = nil)
+    if not id
+      id = params[:id]
+    end
+
+    Msgs.all(:tid => id)
+  end
+
 end
 
 helpers TrackHelpers
@@ -36,6 +45,9 @@ end
 
 get '/track/:id' do 
   @track = find_track
+  puts find_track
+  puts @track
+  @track.msgs = get_msgs
   slim :track_page
 end
 
@@ -51,6 +63,14 @@ get '/track/:id/edit' do
   protected!
   @track = find_track
   slim :edit_track
+end
+
+post '/track/:id/post' do
+  if Msgs.create(:tid => params[:id], :msg => params[:msg])
+    return "true"
+  else
+    return "failed"
+  end
 end
 
 put'/track/:id' do

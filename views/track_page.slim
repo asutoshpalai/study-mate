@@ -9,3 +9,16 @@ p
 form action="/track/#{@track.id}" method="post"
   input type="hidden" name="_method" value="DELETE"
   input type="submit" value="Delete this track"
+
+
+#msgs-container
+  -if @track.msgs.any?
+    ol#msgs
+      - @track.msgs.each do |msg|
+        li.msg == msg.msg
+  - else
+    p No msgs in the track
+
+form#createpost action="/track/#{@track.id}/post" method="post"
+  textarea#postbox name="msg"
+  input type="submit" value="post"
