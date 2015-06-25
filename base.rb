@@ -4,23 +4,21 @@ require 'slim'
 require 'sinatra/flash'
 require 'v8'
 require 'coffee-script'
-require './auth/auth'
 
 class Base < Sinatra::Base
   register Auth
   register Sinatra::Flash
 
+  helpers BaseHelpers
+
   configure :development do
     register Sinatra::Reloader
   end
 
-  def css(*stylesheets)
-    stylesheets.map do |stylesheet|
-      "<link href=\"/#{stylesheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
-    end.join
+  configure do
+    DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+    DataMapper.finalize
+
   end
 
-  def current?(path='/')
-    (request.path == path || request.path == path + '/') ? "current" : nil
-  end
 end

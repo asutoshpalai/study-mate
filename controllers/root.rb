@@ -1,5 +1,3 @@
-require './base'
-
 class RootController < Base
 
   get('/styles.css') { scss :styles }

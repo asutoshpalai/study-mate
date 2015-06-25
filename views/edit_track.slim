@@ -1,4 +1,4 @@
-h2 Edit: == @track.name
+h2 Edit #{@track.name}
 
 form method="POST" action="/tracks/#{@track.id}"
   input type="hidden" name="_method" value="PUT"

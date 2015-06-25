@@ -1,7 +1,4 @@
-require 'sinatra/base'
-
-require './root'
-require './track'
+require_relative './strapup'
 
 map('/tracks') { run TrackController}
 map('/') {run RootController}

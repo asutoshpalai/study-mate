@@ -1,23 +1,7 @@
-require 'sinatra/flash'
-require_relative '../db/users'
-
 module Auth
 
-  module Helpers
-
-    def authorized?
-      session[:logged]
-    end
-
-
-    def protected!
-      halt 401,slim(:unauthorized) unless authorized?
-    end
-
-  end
-
   def self.registered(app)
-    app.helpers Helpers
+    app.helpers AuthHelpers
 
     app.enable :sessions
 
