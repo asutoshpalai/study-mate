@@ -1,7 +1,7 @@
 require 'sinatra/base'
 
-require './main'
+require './root'
 require './track'
 
 map('/tracks') { run TrackController}
-map('/') {run StudyMate}
+map('/') {run RootController}

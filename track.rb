@@ -1,10 +1,5 @@
 require 'digest'
-require 'sinatra/base'
-require 'sinatra/reloader'
-require 'slim'
-require 'sass'
-require 'sinatra/flash'
-require './auth/auth'
+require './base'
 require './db/track'
 require './db/msgs'
 require './db/files'
@@ -54,31 +49,14 @@ module TrackHelpers
 
 end
 
-class TrackController < Sinatra::Base
+class TrackController < Base
   enable :method_override
-  register Sinatra::Flash
-  register Sinatra::Auth
-
   helpers TrackHelpers
 
   configure do
     DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
     DataMapper.finalize
 
-  end
-
-  configure :development do
-    register Sinatra::Reloader
-  end
-
-  def css(*stylesheets)
-    stylesheets.map do |stylesheet|
-      "<link href=\"/#{stylesheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
-    end.join
-  end
-
-  def current?(path='/')
-    (request.path == path || request.path == path + '/') ? "current" : nil
   end
 
   get '/' do
