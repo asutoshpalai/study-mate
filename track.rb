@@ -1,4 +1,10 @@
 require 'digest'
+require 'sinatra/base'
+require 'sinatra/reloader'
+require 'slim'
+require 'sass'
+require 'sinatra/flash'
+require './auth/auth'
 require './db/track'
 require './db/msgs'
 require './db/files'
@@ -48,81 +54,106 @@ module TrackHelpers
 
 end
 
-helpers TrackHelpers
+class TrackController < Sinatra::Base
+  enable :method_override
+  register Sinatra::Flash
+  register Sinatra::Auth
 
-get '/tracks' do
-  find_tracks
-  slim :tracks
-end
+  helpers TrackHelpers
 
-get '/tracks/new' do
-  protected!
-  slim :new_track
-end
+  configure do
+    DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+    DataMapper.finalize
 
-post '/tracks/new' do
-  protected!
-  flash[:notice] = "Track created sucessfully" if create_track
-  redirect to("/track/#{@track.id}")
-end
-
-get '/track/:id' do 
-  @track = find_track
-  puts find_track
-  @track.msgs = get_msgs
-  @track.files = get_files
-  slim :track_page
-end
-
-delete '/track/:id' do
-  protected!
-  if find_track.destroy
-    flash[:notice] = "Track deleted"
   end
-  redirect to("/tracks")
-end
 
-get '/track/:id/edit' do
-  protected!
-  @track = find_track
-  slim :edit_track
-end
-
-post '/track/:id/post' do
-  @msg = Msgs.create(:tid => params[:id], :msg => params[:msg])
-  if @msg
-    slim :msg, :layout => false
-  else
-    return "failed"
+  configure :development do
+    register Sinatra::Reloader
   end
-end
 
-post '/track/:id/file' do
-  file = params[:file]
-  sha1 = Digest::SHA1.file(file[:tempfile]).hexdigest
-  File.open('uploads/' + sha1, 'w') do |f|
-    f.write(file[:tempfile].read)
+  def css(*stylesheets)
+    stylesheets.map do |stylesheet|
+      "<link href=\"/#{stylesheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
+    end.join
   end
-  @file = Files.create(:tid => params[:id], :name => file[:filename], :sha1 => sha1)
-  if @file
+
+  def current?(path='/')
+    (request.path == path || request.path == path + '/') ? "current" : nil
+  end
+
+  get '/' do
+    find_tracks
+    slim :tracks
+  end
+
+  get '/new' do
+    protected!
+    slim :new_track
+  end
+
+  post '/new' do
+    protected!
+    flash[:notice] = "Track created sucessfully" if create_track
+    redirect to("/#{@track.id}")
+  end
+
+  get '/:id' do 
     @track = find_track
-    slim :file, :layout => false
-  else
-    return "failed"
+    @track.msgs = get_msgs
+    @track.files = get_files
+    slim :track_page
   end
-end
 
-get '/track/:id/file/:filename' do
-  @file = get_file
-  send_file 'uploads/' + @file.sha1
-end
-
-
-put'/track/:id' do
-  protected!
-  track = find_track
-  if track.update(params[:track])
-    flash[:notice] = "Track updated successfully"
+  delete '/:id' do
+    protected!
+    if find_track.destroy
+      flash[:notice] = "Track deleted"
+    end
+    redirect to("/")
   end
-  redirect to("/track/#{track.id}")
+
+  get '/:id/edit' do
+    protected!
+    @track = find_track
+    slim :edit_track
+  end
+
+  post '/:id/post' do
+    @msg = Msgs.create(:tid => params[:id], :msg => params[:msg])
+    if @msg
+      slim :msg, :layout => false
+    else
+      return "failed"
+    end
+  end
+
+  post '/:id/file' do
+    file = params[:file]
+    sha1 = Digest::SHA1.file(file[:tempfile]).hexdigest
+    File.open('uploads/' + sha1, 'w') do |f|
+      f.write(file[:tempfile].read)
+    end
+    @file = Files.create(:tid => params[:id], :name => file[:filename], :sha1 => sha1)
+    if @file
+      @track = find_track
+      slim :file, :layout => false
+    else
+      return "failed"
+    end
+  end
+
+  get '/:id/file/:filename' do
+    @file = get_file
+    send_file 'uploads/' + @file.sha1
+  end
+
+
+  put'/:id' do
+    protected!
+    track = find_track
+    if track.update(params[:track])
+      flash[:notice] = "Track updated successfully"
+    end
+    redirect to("/#{track.id}")
+  end
 end

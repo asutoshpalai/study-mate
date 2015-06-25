@@ -1,20 +1,19 @@
-require 'sinatra'
-require "sinatra/reloader" if development?
+require 'sinatra/base'
+require 'sinatra/reloader'
 require 'slim'
 require 'sinatra/flash'
 require 'v8'
 require 'coffee-script'
 require './auth/auth'
-require './track'
 
+class StudyMate < Sinatra::Base
+  register Sinatra::Auth
+  register Sinatra::Flash
 
-configure do
-  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-  DataMapper.finalize
+  configure :development do
+    register Sinatra::Reloader
+  end
 
-end
-
-helpers do
   def css(*stylesheets)
     stylesheets.map do |stylesheet|
       "<link href=\"/#{stylesheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
@@ -24,20 +23,20 @@ helpers do
   def current?(path='/')
     (request.path == path || request.path == path + '/') ? "current" : nil
   end
-end
 
-get('/styles.css') { scss :styles }
-get('/javascripts/application.js') { coffee :application }
+  get('/styles.css') { scss :styles }
+  get('/javascripts/application.js') { coffee :application }
 
-get '/' do
-  title = "StudyMate::Home"
-  slim :home, :locals => {:title => title}
-end
+  get '/' do
+    title = "StudyMate::Home"
+    slim :home, :locals => {:title => title}
+  end
 
-get '/about' do
-  slim :about, :locals => {:title => "StudyMata :: About"}
-end
+  get '/about' do
+    slim :about, :locals => {:title => "StudyMata :: About"}
+  end
 
-not_found do
-  slim :not_found
+  not_found do
+    slim :not_found
+  end
 end

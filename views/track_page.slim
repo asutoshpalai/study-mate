@@ -5,9 +5,9 @@ h2 = @track.name
     pre #{ @track.description }
   p <a href="/tracks">Back to track listing</a>
   p
-    a href="/track/#{@track.id}/edit" Edit the details
+    a href="/tracks/#{@track.id}/edit" Edit the details
 
-  form action="/track/#{@track.id}" method="post"
+  form action="/tracks/#{@track.id}" method="post"
     input type="hidden" name="_method" value="DELETE"
     input type="submit" value="Delete this track"
 
@@ -23,7 +23,7 @@ h2 = @track.name
     - else
       p No msgs in the track
 
-  form#createpost action="/track/#{@track.id}/post" method="post"
+  form#createpost action="/tracks/#{@track.id}/post" method="post"
     textarea#postbox name="msg"
     input type="submit" value="post"
 
@@ -35,6 +35,6 @@ h2 = @track.name
           li
             - @file = file
             == slim :file
-  form#fileupload action="/track/#{@track.id}/file" method="post" enctype="multipart/form-data"
+  form#fileupload action="/tracks/#{@track.id}/file" method="post" enctype="multipart/form-data"
     input type="file" name="file"
     input type="submit" value="Upload!"

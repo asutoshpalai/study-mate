@@ -1,2 +1,7 @@
+require 'sinatra/base'
+
 require './main'
-run Sinatra::Application
+require './track'
+
+map('/tracks') { run TrackController}
+map('/') {run StudyMate}

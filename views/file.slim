@@ -2,5 +2,5 @@ span.upload-time == @file.created_at.strftime("%b %e, %l:%M %p")
 br
 span.file-name == @file.name
 br
-a.file-link href='/track/#{@track.id}/file/#{@file.name}' target="_blank"
+a.file-link href='/tracks/#{@track.id}/file/#{@file.name}' target="_blank"
   span Download
