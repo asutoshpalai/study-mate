@@ -8,8 +8,9 @@ nav
       a href="/tracks" title="Tracks" class=current?("/tracks") Tracks
 
     li#status
-      - if session[:admin]
+      - if authorized?
         a href="/logout" title="Logout" Logout
       - else
         a href="/login" title="Login" Login
-
+        == '|'
+        a href="/signup" title="Signup" Signup

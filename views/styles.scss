@@ -65,8 +65,12 @@ nav {
 
   #status {
     float: right;
-  }
+    a {
+      display: inline-block;
 
+    }
+
+  }
 }
 
 p {

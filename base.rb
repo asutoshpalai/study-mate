@@ -7,7 +7,7 @@ require 'coffee-script'
 require './auth/auth'
 
 class Base < Sinatra::Base
-  register Sinatra::Auth
+  register Auth
   register Sinatra::Flash
 
   configure :development do
