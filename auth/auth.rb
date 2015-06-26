@@ -14,6 +14,7 @@ module Auth
       user  = Users.all(:username => params[:username], :pass => pass)
       if user.length == 1
         session[:logged] = true
+        session[:uid] = user[0].id
         flash[:notice] = "Logged in sucessfully"
         redirect to('/tracks')
       else

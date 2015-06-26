@@ -8,9 +8,15 @@ nav
       a href="/tracks" title="Tracks" class=current?("/tracks") Tracks
 
     li#status
-      - if authorized?
-        a href="/logout" title="Logout" Logout
-      - else
-        a href="/login" title="Login" Login
-        == '|'
-        a href="/signup" title="Signup" Signup
+      ul
+        - if authorized?
+          li
+            a href="/user" title="Userpage" == get_user.name
+          li
+            a href="/logout" title="Logout" Logout
+        - else
+          li
+            a href="/login" title="Login" Login
+          == '|'
+          li
+            a href="/signup" title="Signup" Signup
