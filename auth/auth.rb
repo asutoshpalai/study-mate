@@ -3,7 +3,6 @@ require 'digest'
 module Auth
 
   def self.registered(app)
-    app.helpers AuthHelpers
 
     app.enable :sessions
 

@@ -3,7 +3,6 @@ require 'digest'
 class UserController < Base
 
   enable :method_override
-  helpers UserHelpers
   
   get '/' do
     required_login!

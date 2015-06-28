@@ -2,7 +2,6 @@ require 'digest'
 
 class TrackController < Base
   enable :method_override
-  helpers TrackHelpers
 
   get '/' do
     find_tracks

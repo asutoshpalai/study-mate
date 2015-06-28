@@ -9,8 +9,6 @@ class Base < Sinatra::Base
   register Auth
   register Sinatra::Flash
 
-  helpers BaseHelpers
-
   configure :development do
     register Sinatra::Reloader
   end
