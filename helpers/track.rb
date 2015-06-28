@@ -1,15 +1,20 @@
 module TrackHelpers
 
   def find_tracks
-    @tracks = Track.all
+    if user
+      @tracks = user.tracks.all
+    else
+      @tracks = Track.all
+    end
   end
 
   def find_track
-    Track.get(params[:id])
+    user.tracks.get(params[:id])
   end
 
   def create_track
-    @track = Track.create(params[:track])
+    @track = Track.create(params[:track], :admin => user.id)
+    UserRelation.create(:track_id => @track.id, :users_id => user.id)
   end
 
   def get_msgs(id = nil)

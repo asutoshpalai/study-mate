@@ -10,4 +10,7 @@ class Users
   property :pass, String
   property :signed_up_at, DateTime, :default => DateTime.now
 
+  has n, :user_relations
+  has n, :tracks, :through => :user_relations
+
 end
