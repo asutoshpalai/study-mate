@@ -112,12 +112,16 @@ label {
 }
 .left {
   float: left;
-  max-width: 15%;
+  max-width: 20%;
+}
+.right {
+  float: right;
+  max-width: 20%;
 }
 
 #msgs-container {
   float: left;
-  width: 80%;
+  width: 55%;
   margin-left: 10px;
 
   #msgs {
@@ -152,4 +156,10 @@ label {
 
 #file-container {
   clear:both;
+}
+
+fieldset {
+  margin: 10px 0px;
+  border: 0px;
+  padding: 2px;
 }

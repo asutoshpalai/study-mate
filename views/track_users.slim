@@ -1,0 +1,11 @@
+h2 #{@track.name} Users
+
+h3 User List:
+pre
+  == slim :users_list
+
+
+hr
+fieldset
+  legend Add uesrs to track
+  == slim :add_track_user_form

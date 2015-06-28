@@ -4,6 +4,7 @@ class TrackController < Base
   enable :method_override
 
   get '/' do
+    required_login!
     find_tracks
     slim :tracks
   end
@@ -23,6 +24,7 @@ class TrackController < Base
     @track = find_track
     @track.msgs = get_msgs
     @track.files = get_files
+    @users = @track.users.all
     slim :track_page
   end
 
@@ -38,6 +40,24 @@ class TrackController < Base
     protected!
     @track = find_track
     slim :edit_track
+  end
+
+  get '/:id/users' do
+    protected!
+    @track = find_track
+    @users = track_users
+    slim :track_users
+  end
+
+  post '/:id/users' do
+    protected!
+    @track = find_track
+    tid = @track.id
+    uid = Users.all(:username => params[:username])[0].id
+    puts uid
+    add_user_to_track tid, uid
+    @users = @track.users.all
+    slim :users_list
   end
 
   post '/:id/post' do
@@ -68,7 +88,6 @@ class TrackController < Base
     @file = get_file
     send_file 'uploads/' + @file.sha1
   end
-
 
   put'/:id' do
     protected!

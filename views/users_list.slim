@@ -1,0 +1,13 @@
+- if @users.any?
+  table#users
+    thead
+        tr
+          th Name
+          th Username
+    tbody
+      -@users.each do |user|
+        tr
+          td #{user.name}
+          td #{user.username}
+- else
+  p There are no users

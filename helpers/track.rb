@@ -12,9 +12,22 @@ module TrackHelpers
     user.tracks.get(params[:id])
   end
 
+  def track_users
+    find_track.users.all
+  end
+
   def create_track
-    @track = Track.create(params[:track], :admin => user.id)
-    UserRelation.create(:track_id => @track.id, :users_id => user.id)
+    params[:track][:admin] = user.id
+    @track = Track.create(params[:track])
+    UserRelation.create(:track_id => @track.id, :users_id => user.id, :relation => 1)
+  end
+
+  def add_user_to_track(tid, uid, role = 2)
+    if Track.get(tid).admin != user.id
+      unauthorized!
+    end
+
+    UserRelation.create(:track_id => @track.id, :users_id => uid, :relation => role)
   end
 
   def get_msgs(id = nil)

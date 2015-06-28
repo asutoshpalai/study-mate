@@ -16,6 +16,7 @@ class Base < Sinatra::Base
   configure do
     DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
     DataMapper.finalize
+    DataMapper.auto_upgrade!
 
   end
 

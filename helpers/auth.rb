@@ -9,13 +9,17 @@ module AuthHelpers
   end
 
   def protected!
-    halt 401,slim(:unauthorized) unless authorized?
+    unauthorized! unless authorized?
+  end
+  
+  def unauthorized!
+    halt 401,slim(:unauthorized) 
   end
 
   def required_login!
     if not logged_in?
       flash[:notice] = "You need to sign in first"
-      redirect to('/login')
+      redirect '/login'
     end
   end
 
