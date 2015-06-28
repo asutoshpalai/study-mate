@@ -1,0 +1,26 @@
+h2 Settings
+
+h3 Change name
+form#editname action="/user/settings" method="POST"
+  input type="hidden" name="_method" value="PUT"
+  input type="hidden" name="value" value="name"
+  label for="name" Name:
+  input#name type="text" name="name" value="#{@user.name }"
+  input type="submit" value="Change"
+
+br
+h3 Change password
+form#editpass action="/user/settings" method="POST"
+  input type="hidden" name="_method" value="PUT"
+  input type="hidden" name="value" value="password"
+  label for="oldpass" Old Password :
+  input type="password" name="oldpass" 
+  label for="oldpass" New Password :
+  input type="password" name="newpass" 
+  input type="submit" value="Change"
+
+br
+hr
+form#deleteacc action="/user/settings" method="POST"
+  input type="hidden" name="_method" value="DELETE"
+  input type="Submit" value="Delete this account"

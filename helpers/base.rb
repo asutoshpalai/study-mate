@@ -10,8 +10,4 @@ module BaseHelpers
     (request.path == path || request.path == path + '/') ? "current" : nil 
   end 
 
-  def get_user
-    @user = Users.get(session[:uid])
-  end
-
 end

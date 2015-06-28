@@ -1,3 +1,5 @@
+require 'digest'
+
 module Auth
 
   def self.registered(app)
@@ -13,12 +15,12 @@ module Auth
       pass = Digest::SHA256.hexdigest(params[:password])
       user  = Users.all(:username => params[:username], :pass => pass)
       if user.length == 1
-        session[:logged] = true
-        session[:uid] = user[0].id
+        log_in(user[0].id)
         flash[:notice] = "Logged in sucessfully"
         redirect to('/tracks')
       else
         flash[:notice] = "Wrong username or password #{pass}"
+        redirect to('/login')
       end
 
     end
@@ -29,8 +31,9 @@ module Auth
 
     app.post '/signup' do
       pass = Digest::SHA256.hexdigest(params[:pass])
-      if Users.create(:name => params[:name], :username => params[:username], :pass => pass )
-        session[:logged] = true
+      user = Users.create(:name => params[:name], :username => params[:username], :pass => pass )
+      if user
+        log_in(user.id)
         flash[:notice] = "Signed up sucessfully"
         redirect to('/')
       else
@@ -40,7 +43,7 @@ module Auth
     end
 
     app.get '/logout' do
-      session[:logged] = nil
+      log_out
       flash[:notice] = "You have logged out"
       redirect to('/')
     end
