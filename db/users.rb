@@ -12,5 +12,7 @@ class Users
 
   has n, :user_relations
   has n, :tracks, :through => :user_relations
+  has n, :msgs, 'Msgs', :child_key => :user_id
+  has n, :files, 'Files', :child_key => :user_id
 
 end

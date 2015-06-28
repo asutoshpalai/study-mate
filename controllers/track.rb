@@ -57,11 +57,11 @@ class TrackController < Base
     puts uid
     add_user_to_track tid, uid
     @users = @track.users.all
-    slim :users_list
+    slim :users_list, :layout => false
   end
 
   post '/:id/post' do
-    @msg = Msgs.create(:tid => params[:id], :msg => params[:msg])
+    @msg = Msgs.create(:track_id => params[:id], :msg => params[:msg], :user_id => user.id)
     if @msg
       slim :msg, :layout => false
     else
@@ -70,12 +70,13 @@ class TrackController < Base
   end
 
   post '/:id/file' do
+    puts params.inspect
     file = params[:file]
     sha1 = Digest::SHA1.file(file[:tempfile]).hexdigest
     File.open('uploads/' + sha1, 'w') do |f|
       f.write(file[:tempfile].read)
     end
-    @file = Files.create(:tid => params[:id], :name => file[:filename], :sha1 => sha1)
+    @file = Files.create(:track_id => params[:id], :user_id => user.id, :name => file[:filename], :sha1 => sha1)
     if @file
       @track = find_track
       slim :file, :layout => false

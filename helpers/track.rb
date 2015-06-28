@@ -35,7 +35,7 @@ module TrackHelpers
       id = params[:id]
     end
 
-    Msgs.all(:tid => id)
+    Msgs.all(:track_id => id)
   end
 
   def get_files(id = nil)
@@ -43,7 +43,7 @@ module TrackHelpers
       id = params[:id]
     end
 
-    Files.all(:tid => id)
+    Files.all(:track_id => id)
   end
 
   def get_file(tid = nil, filename = nil)
