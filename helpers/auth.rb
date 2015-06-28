@@ -30,10 +30,5 @@ module AuthHelpers
     session.clear
   end
 
-  def get_user
-    puts session.inspect
-    Users.get(session[:uid])
-  end
-
 end
 

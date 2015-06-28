@@ -6,20 +6,20 @@ class UserController < Base
   
   get '/' do
     required_login!
-    @user = get_user
+    @user = user
     slim :user_page
   end
 
   get '/settings' do
     required_login!
-    @user = get_user
+    @user = user
 
     slim :settings
   end
 
   put '/settings' do
     required_login!
-    @user = get_user
+    @user = user
     if params[:value] === 'name'
       @user.update(:name => params[:name])
       flash.now[:notice] = "Your name changed successfully"
@@ -36,7 +36,7 @@ class UserController < Base
 
   delete '/settings' do
     required_login!
-    @user = get_user
+    @user = user
     log_out
     @user.destroy
     redirect to('/')
