@@ -5,9 +5,9 @@ class Track
   include DataMapper::Resource
   attr_accessor :msgs, :files
   property :id, Serial
-  property :name, String, :unique => true
-  property :description, Text
-  property :admin, Integer
+  property :name, String, :unique => true, :required => true
+  property :description, Text, :required => true
+  property :admin, Integer, :required => true
   property :created_at, DateTime, :default => DateTime.now
 
   has n, :user_relations
