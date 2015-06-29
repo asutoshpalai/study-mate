@@ -5,7 +5,7 @@ module AuthHelpers
   end
 
   def authorized?
-    logged_in?
+    logged_in? and find_track
   end
 
   def protected!

@@ -21,7 +21,7 @@ class UserController < Base
     required_login!
     @user = user
     if params[:value] === 'name'
-      @user.update(:name => params[:name])
+      @user.update(:name => clean_input(params[:name]))
       flash.now[:notice] = "Your name changed successfully"
     elsif params[:value] === 'password'
       oldpass = Digest::SHA256.hexdigest(params[:oldpass])

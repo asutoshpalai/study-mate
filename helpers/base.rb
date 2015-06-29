@@ -1,3 +1,5 @@
+require 'rack/utils'
+
 module BaseHelpers
 
   def css(*stylesheets)
@@ -9,5 +11,9 @@ module BaseHelpers
   def current?(path='/')
     (request.path == path || request.path == path + '/') ? "current" : nil 
   end 
+
+  def clean_input(text)
+    Rack::Utils.escape_html text
+  end
 
 end

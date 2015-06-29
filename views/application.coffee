@@ -15,6 +15,7 @@ $ ->
           $('#msgs ol').append(
             '<li>' + data + '</li>'
           )
+          $('#postbox').val('')
 
 
     )
@@ -38,6 +39,13 @@ $ ->
               '<ol></ol>'
             )
           $('#files ol').append(
+            '<li>' + data + '</li>'
+          )
+          if (!$('#msgs ol').length)
+            $('#msgs').html(
+              '<ol></ol>'
+            )
+          $('#msgs ol').append(
             '<li>' + data + '</li>'
           )
 

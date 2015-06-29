@@ -10,17 +10,18 @@ class TrackController < Base
   end
 
   get '/new' do
-    protected!
+    required_login!
     slim :new_track
   end
 
   post '/new' do
-    protected!
+    required_login!
     flash[:notice] = "Track created sucessfully" if create_track
     redirect to("/#{@track.id}")
   end
 
   get '/:id' do 
+    protected!
     @track = find_track
     @track.msgs = get_msgs
     @track.files = get_files
@@ -51,7 +52,7 @@ class TrackController < Base
 
   post '/:id/users' do
     protected!
-    @track = find_track
+    find_track
     tid = @track.id
     uid = Users.all(:username => params[:username])[0].id
     puts uid
@@ -61,7 +62,8 @@ class TrackController < Base
   end
 
   post '/:id/post' do
-    @msg = Msgs.create(:track_id => params[:id], :msg => params[:msg], :user_id => user.id)
+    protected!
+    @msg = Msgs.create(:track_id => params[:id], :msg => clean_input(params[:msg]), :user_id => user.id)
     if @msg
       slim :msg, :layout => false
     else
@@ -70,22 +72,25 @@ class TrackController < Base
   end
 
   post '/:id/file' do
-    puts params.inspect
+    protected!
     file = params[:file]
     sha1 = Digest::SHA1.file(file[:tempfile]).hexdigest
     File.open('uploads/' + sha1, 'w') do |f|
       f.write(file[:tempfile].read)
     end
-    @file = Files.create(:track_id => params[:id], :user_id => user.id, :name => file[:filename], :sha1 => sha1)
+    @file = Files.create(:track_id => params[:id], :user_id => user.id, :name => clean_input(file[:filename]), :sha1 => sha1)
     if @file
-      @track = find_track
-      slim :file, :layout => false
+      find_track
+      ret = slim :file, :layout => false
+      @msg = Msgs.create(:track_id => params[:id], :msg => ret, :user_id => user.id)
+      ret
     else
       return "failed"
     end
   end
 
   get '/:id/file/:filename' do
+    protected!
     @file = get_file
     send_file 'uploads/' + @file.sha1
   end
@@ -93,7 +98,11 @@ class TrackController < Base
   put'/:id' do
     protected!
     track = find_track
-    if track.update(params[:track])
+    t = params[:track]
+    t[:admin] = user.id
+    t[:name] = clean_input t[:name]
+    t[:description] = clean_imput t[:description]
+    if track.update(t)
       flash[:notice] = "Track updated successfully"
     end
     redirect to("/#{track.id}")

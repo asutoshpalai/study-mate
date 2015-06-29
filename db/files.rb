@@ -4,7 +4,7 @@ require 'dm-migrations'
 class Files
   include DataMapper::Resource
   property :id, Serial
-  property :track_id, Integer, :required => true
+  property :track_id, Integer, :unique => :track_id, :required => true
   property :user_id, Integer, :required => true
   property :name, String, :unique => :track_id, :required => true
   property :sha1, String, :required => true

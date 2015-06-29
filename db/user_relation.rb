@@ -12,7 +12,7 @@ class UserRelation
   include DataMapper::Resource
   property :id, Serial
 
-  property :track_id, Integer, :required => true
+  property :track_id, Integer, :unique => :track_id, :required => true
   property :users_id, Integer, :unique => :track_id
   property :relation, Integer, :required => true
   property :last_modified, DateTime, :default => DateTime.now

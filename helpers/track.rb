@@ -9,7 +9,8 @@ module TrackHelpers
   end
 
   def find_track
-    user.tracks.get(params[:id])
+    return @track if defined? @track
+    @track = user.tracks.get(params[:id])
   end
 
   def track_users
@@ -17,8 +18,12 @@ module TrackHelpers
   end
 
   def create_track
-    params[:track][:admin] = user.id
-    @track = Track.create(params[:track])
+    t = params[:track]
+    t[:admin] = user.id
+    t[:name] = clean_input t[:name]
+    t[:description] = clean_input t[:description]
+    @track = Track.create(t)
+    puts @track.inspect
     UserRelation.create(:track_id => @track.id, :users_id => user.id, :relation => 1)
   end
 
