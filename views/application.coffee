@@ -1,3 +1,13 @@
+addNewMessage = (data) ->
+  if (!$('#msgs ol').length)
+    $('#msgs').html(
+      '<ol></ol>'
+    )
+  $('#msgs ol').append(
+    '<li>' + data + '</li>'
+  )
+
+
 $ ->
   $('#createpost').submit (event) ->
     event.preventDefault()
@@ -8,13 +18,6 @@ $ ->
       form.serialize()
       (data) ->
         if (data != "failed")
-          if (!$('#msgs ol').length)
-            $('#msgs').html(
-              '<ol></ol>'
-            )
-          $('#msgs ol').append(
-            '<li>' + data + '</li>'
-          )
           $('#postbox').val('')
 
 
@@ -41,13 +44,7 @@ $ ->
           $('#files ol').append(
             '<li>' + data + '</li>'
           )
-          if (!$('#msgs ol').length)
-            $('#msgs').html(
-              '<ol></ol>'
-            )
-          $('#msgs ol').append(
-            '<li>' + data + '</li>'
-          )
+          $('#fileupload :input[name="file"]').val('')
 
 
     )
@@ -66,3 +63,13 @@ $ ->
     )
     return false
 
+  es = new EventSource(window.location.pathname + '/stream')
+  es.onmessage = (e) ->
+    data = e.data
+    if (data != "failed")
+      addNewMessage data
+
+  $('textarea').keypress( (event) ->
+    if event.keyCode == 13 and event.shiftKey == false
+      $(this.parentNode).trigger('submit')
+  )

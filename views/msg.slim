@@ -2,4 +2,6 @@ span.msg-poster == @msg.user.name
 == ":  "
 span.msg-time == @msg.posted_at.strftime("%b %e, %l:%M %p")
 br
-span.msg == @msg.msg
+span.msg 
+  pre
+    == @msg.msg

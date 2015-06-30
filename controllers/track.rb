@@ -3,6 +3,8 @@ require 'digest'
 class TrackController < Base
   enable :method_override
 
+  @@connections = Hash.new { |h, i| h[i] = [] }
+
   get '/' do
     required_login!
     find_tracks
@@ -50,12 +52,20 @@ class TrackController < Base
     slim :track_users
   end
 
+  get '/:id/stream', provides: 'text/event-stream' do
+    protected!
+    id = params[:id]
+    stream :keep_open do |out|
+          @@connections[id] << out
+          out.callback { @@connections[id].delete(out)   }
+    end
+  end
+
   post '/:id/users' do
     protected!
     find_track
     tid = @track.id
     uid = Users.all(:username => params[:username])[0].id
-    puts uid
     add_user_to_track tid, uid
     @users = @track.users.all
     slim :users_list, :layout => false
@@ -65,8 +75,15 @@ class TrackController < Base
     protected!
     @msg = Msgs.create(:track_id => params[:id], :msg => clean_input(params[:msg]), :user_id => user.id)
     if @msg
-      slim :msg, :layout => false
-    else
+      ret = slim :msg, :layout => false
+      id = params[:id]
+
+      Thread.new do
+        @@connections[id].each { |out| out << "data: #{ret}\n\n" }
+      end
+
+      ret
+   else
       return "failed"
     end
   end
@@ -81,8 +98,15 @@ class TrackController < Base
     @file = Files.create(:track_id => params[:id], :user_id => user.id, :name => clean_input(file[:filename]), :sha1 => sha1)
     if @file
       find_track
+      msg = slim :file_desc, :layout => false
+      @msg = Msgs.create(:track_id => params[:id], :msg => msg, :user_id => user.id)
+      id = params[:id]
+
       ret = slim :file, :layout => false
-      @msg = Msgs.create(:track_id => params[:id], :msg => ret, :user_id => user.id)
+      Thread.new do
+        @@connections[id].each { |out| out << "data: #{ret}\n\n" }
+      end
+
       ret
     else
       return "failed"
@@ -107,4 +131,5 @@ class TrackController < Base
     end
     redirect to("/#{track.id}")
   end
+
 end
