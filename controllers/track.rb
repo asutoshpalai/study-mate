@@ -29,6 +29,7 @@ class TrackController < Base
     @track.msgs = get_msgs
     @track.files = get_files
     @users = @track.users.all
+    @requests = @track.user_requests.all
     slim :track_page
   end
 
@@ -134,6 +135,38 @@ class TrackController < Base
       flash[:notice] = "Track updated successfully"
     end
     redirect to("/#{track.id}")
+  end
+
+  get '/:id/join' do
+    required_login!
+    res = JoinRequest.create(:requested_track_id => find_track(false).id, :user_request_id => user.id)
+    if res
+      flash[:notice] = "Request sent"
+    end
+    redirect to("/")
+  end
+
+  post '/:id/join' do
+    protected!
+    unauthorized! unless admin?
+    tid = find_track.id
+    uid = Users.all(:username => params[:username])[0].id
+    add_user_to_track tid, uid
+    JoinRequest.all(:requested_track_id => tid, :user_request_id => uid)[0].destroy
+    @users = @track.users.all
+    slim :users_list, :layout => false
+  end
+
+  delete '/:id/join' do
+    protected!
+    unauthorized! unless admin?
+    tid = find_track.id
+    uid = Users.all(:username => params[:username])[0].id
+    if JoinRequest.all(:requested_track_id => tid, :user_request_id => uid)[0].destroy
+      "success"
+    else
+      "failed"
+    end
   end
 
 end

@@ -73,3 +73,37 @@ $ ->
     if event.keyCode == 13 and event.shiftKey == false
       $(this.parentNode).trigger('submit')
   )
+
+  $('button.adduser').on 'click', (e) ->
+    username = $(this).data 'username'
+    url = window.location.pathname.match(/^\/tracks\/\d+/)[0] + '/join'
+    success = (data) ->
+      if (data != "failed")
+        $('#userslist').html(data)
+        $(this.parentElement.parentElement).detach()
+
+        if not $('#joinrequests table').children()[2].children.length
+          $('#joinrequests').detach()
+
+    $.post(
+      url
+      { 'username': username}
+      success.bind(this)
+    )
+
+  $('button.deluser').on 'click', (e) ->
+    username = $(this).data 'username'
+    url = window.location.pathname.match(/^\/tracks\/\d+/)[0] + '/join'
+    success = (data) ->
+      if (data != "failed")
+        $(this.parentElement.parentElement).detach()
+
+        if not $('#joinrequests table').children()[2].children.length
+          $('#joinrequests').detach()
+
+    $.ajax(
+      url: url
+      type: 'delete'
+      data: { 'username': username}
+      success: success.bind(this)
+    )

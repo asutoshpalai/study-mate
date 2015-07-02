@@ -12,9 +12,13 @@ module TrackHelpers
     Track.all
   end
 
-  def find_track
+  def find_track(only_user = true)
     return @track if defined? @track
-    @track = user.tracks.get(params[:id])
+    if only_user
+      @track = user.tracks.get(params[:id])
+    else
+      @track = Track.get(params[:id])
+    end
   end
 
   def track_users

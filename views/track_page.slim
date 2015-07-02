@@ -29,13 +29,28 @@ h2 = @track.name
 
 .right
   h3 User List:
-  pre#userslist
+  #userslist
     == slim :users_list
 
   - if admin?
     fieldset
       legend Add uesrs to track
       == slim :add_track_user_form
+
+    - if defined? @requests and @requests.any?
+      #joinrequests
+        table
+          caption Requests to join
+          thead
+            th User
+            th Options
+          tbody
+            - @requests.each do |user|
+              tr
+                td #{user.name} (#{user.username})
+                td
+                  button.adduser data-username="#{user.username}" Add
+                  button.deluser data-username="#{user.username}" Delete
 
 #file-container
   hr

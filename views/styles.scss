@@ -28,6 +28,10 @@ header h1 {
   background: transparent url(/images/logo.jpg) 0 0 no-repeat;
 }
 
+table caption {
+  font-weight: bold;
+}
+
 @mixin tabs ($background: blue, $color: yellow) {
   ul {
     list-style: none;
