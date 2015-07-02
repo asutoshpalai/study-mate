@@ -9,7 +9,7 @@ nav
 
     li#status
       ul
-        - if authorized?
+        - if logged_in?
           li
             a href="/user" title="Userpage" == user.name
           li

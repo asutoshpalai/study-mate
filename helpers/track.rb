@@ -8,6 +8,10 @@ module TrackHelpers
     end
   end
 
+  def all_tracks
+    Track.all
+  end
+
   def find_track
     return @track if defined? @track
     @track = user.tracks.get(params[:id])
@@ -19,7 +23,7 @@ module TrackHelpers
 
   def create_track
     t = params[:track]
-    t[:admin] = user.id
+    t[:admin_id] = user.id
     t[:name] = clean_input t[:name]
     t[:description] = clean_input t[:description]
     @track = Track.create(t)
@@ -28,7 +32,7 @@ module TrackHelpers
   end
 
   def add_user_to_track(tid, uid, role = 2)
-    if Track.get(tid).admin != user.id
+    if Track.get(tid).admin.id != user.id
       unauthorized!
     end
 
@@ -62,6 +66,10 @@ module TrackHelpers
     end
 
     Files.all(:tid => tid, :name => filename)[0]
+  end
+
+  def admin?
+    find_track.admin.id === user.id
   end
 
 end

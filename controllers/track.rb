@@ -8,6 +8,7 @@ class TrackController < Base
   get '/' do
     required_login!
     find_tracks
+    @othertracks = all_tracks.select { |t| not @tracks.include? t }
     slim :tracks
   end
 
@@ -33,6 +34,7 @@ class TrackController < Base
 
   delete '/:id' do
     protected!
+    unauthorized! unless admin?
     if find_track.destroy
       flash[:notice] = "Track deleted"
     end
@@ -42,6 +44,7 @@ class TrackController < Base
   get '/:id/edit' do
     protected!
     @track = find_track
+    unauthorized! unless admin?
     slim :edit_track
   end
 
@@ -63,6 +66,7 @@ class TrackController < Base
 
   post '/:id/users' do
     protected!
+    unauthorized! unless admin?
     find_track
     tid = @track.id
     uid = Users.all(:username => params[:username])[0].id
@@ -122,10 +126,10 @@ class TrackController < Base
   put'/:id' do
     protected!
     track = find_track
+    unauthorized! unless admin?
     t = params[:track]
-    t[:admin] = user.id
     t[:name] = clean_input t[:name]
-    t[:description] = clean_imput t[:description]
+    t[:description] = clean_input t[:description]
     if track.update(t)
       flash[:notice] = "Track updated successfully"
     end

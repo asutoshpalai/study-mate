@@ -1,11 +1,26 @@
 h1 Tracks
 a href='/tracks/new' Create a new track
 
-- if @tracks.any?
-  ul#tracks
-    -@tracks.each do |track|
-      li
-        a href="/tracks/#{track.id}" #{track.name}
-- else
-  p No tracks have been created
+h3 Your Tracks
+div
+  - if @tracks.any?
+    ul#tracks
+      -@tracks.each do |track|
+        li
+          a href="/tracks/#{track.id}" #{track.name}
+          - if track.admin == user
+            |  (admin)
+  - else
+    p No tracks are associated with your account
 
+h3 Other Tracks
+div
+  - if @othertracks.any?
+    ul#othertracks
+      -@othertracks.each do |track|
+        li
+          a href="/tracks/#{track.id}" #{track.name}
+          |  admin : 
+          span#admin #{track.admin.name} (#{track.admin.username})
+  - else
+    p No other tracks has been created

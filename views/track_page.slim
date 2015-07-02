@@ -2,14 +2,15 @@ h2 = @track.name
 
 .left#details
   p About:
-    pre #{ @track.description }
+    #{ @track.description }
   p <a href="/tracks">Back to track listing</a>
-  p
-    a href="/tracks/#{@track.id}/edit" Edit the details
+  - if admin?
+    p
+      a href="/tracks/#{@track.id}/edit" Edit the details
 
-  form action="/tracks/#{@track.id}" method="post"
-    input type="hidden" name="_method" value="DELETE"
-    input type="submit" value="Delete this track"
+    form action="/tracks/#{@track.id}" method="post"
+      input type="hidden" name="_method" value="DELETE"
+      input type="submit" value="Delete this track"
 
 #msgs-container
   #msgs
@@ -31,9 +32,10 @@ h2 = @track.name
   pre#userslist
     == slim :users_list
 
-  fieldset
-    legend Add uesrs to track
-    == slim :add_track_user_form
+  - if admin?
+    fieldset
+      legend Add uesrs to track
+      == slim :add_track_user_form
 
 #file-container
   hr
