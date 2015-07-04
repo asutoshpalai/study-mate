@@ -1,0 +1,15 @@
+- @requests = @track.user_requests.all
+- if @requests.any?
+  #joinrequests
+    table
+      caption Requests to join
+      thead
+        th User
+        th Options
+      tbody
+        - @requests.each do |user|
+          tr
+            td #{user.name} (#{user.username})
+            td
+              button.adduser data-username="#{user.username}" Add
+              button.deluser data-username="#{user.username}" Delete

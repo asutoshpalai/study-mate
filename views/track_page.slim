@@ -5,12 +5,7 @@ h2 = @track.name
     #{ @track.description }
   p <a href="/tracks">Back to track listing</a>
   - if admin?
-    p
-      a href="/tracks/#{@track.id}/edit" Edit the details
-
-    form action="/tracks/#{@track.id}" method="post"
-      input type="hidden" name="_method" value="DELETE"
-      input type="submit" value="Delete this track"
+    a href="/tracks/#{@track.id}/admin" Admin Page
 
 #msgs-container
   #msgs
@@ -28,29 +23,10 @@ h2 = @track.name
     input type="submit" value="post"
 
 .right
-  h3 User List:
+  h3 
+    a href="/tracks/#{@track.id}/users" User List:
   #userslist
     == slim :users_list
-
-  - if admin?
-    fieldset
-      legend Add uesrs to track
-      == slim :add_track_user_form
-
-    - if defined? @requests and @requests.any?
-      #joinrequests
-        table
-          caption Requests to join
-          thead
-            th User
-            th Options
-          tbody
-            - @requests.each do |user|
-              tr
-                td #{user.name} (#{user.username})
-                td
-                  button.adduser data-username="#{user.username}" Add
-                  button.deluser data-username="#{user.username}" Delete
 
 #file-container
   hr

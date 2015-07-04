@@ -9,3 +9,6 @@ hr
 fieldset
   legend Add uesrs to track
   == slim :add_track_user_form
+
+- if admin?
+  == slim :join_requests

@@ -1,0 +1,23 @@
+h2 Admin Page #{@track.name}
+
+p
+  a href="/tracks/#{@track.id}" Back to track page
+
+p
+  a href="/tracks/#{@track.id}/edit" Edit the details
+
+form action="/tracks/#{@track.id}" method="post"
+  input type="hidden" name="_method" value="DELETE"
+  input type="submit" value="Delete this track"
+
+hr
+h3 
+  a href="/tracks/#{@track.id}/users" User List:
+#userslist
+  == slim :users_list
+
+fieldset
+  legend Add uesrs to track
+  == slim :add_track_user_form
+
+== slim :join_requests

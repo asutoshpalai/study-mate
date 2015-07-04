@@ -169,4 +169,12 @@ class TrackController < Base
     end
   end
 
+  get '/:id/admin' do
+    protected!
+    unauthorized! unless admin?
+    find_track
+    @users = @track.users.all
+    slim :track_admin
+  end
+
 end

@@ -70,15 +70,22 @@ class TestApp < Test::Unit::TestCase
   end
 
   def test_tracks
+    if Users.all(:username => 'autotracktester').length != 0
+      Users.all(:username => 'autotracktester')[0].destroy
+    end
+
+    get '/tracks'
+    assert last_response.status === 302
+    follow_redirect!
+    assert last_response.body.include? 'You need to sign in first'
+ 
     Users.create(:name => "Auto Tester for track", :username => 'autotracktester', :pass => Digest::SHA256.hexdigest('1234567890'))
+
+    post '/login', {:username => 'autotracktester', :password => '1234567890'}
+
     get '/tracks'
     assert last_response.ok?
     assert last_response.body.include? 'Create a new track'
-
-    get '/tracks/new'
-    assert last_response.status === 401
-
-    post '/login', {:username => 'autotracktester', :password => '1234567890'}
 
     get '/tracks/new'
 
@@ -105,8 +112,6 @@ class TestApp < Test::Unit::TestCase
     follow_redirect!
     assert last_response.body.include? 'Track updated successfully'
  
-    puts last_response.inspect
-    
     Users.all(:username => 'autotracktester')[0].destroy
     Track.all(:name => 'Auto testing track Edited')[0].destroy
 
