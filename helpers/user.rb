@@ -8,7 +8,6 @@ module UserHelpers
   end
 
   def get_user
-    puts session.inspect
     Users.get(session[:uid])
   end
 

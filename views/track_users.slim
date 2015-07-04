@@ -6,9 +6,13 @@ pre
 
 
 hr
-fieldset
-  legend Add uesrs to track
-  == slim :add_track_user_form
-
 - if admin?
+  fieldset
+    legend Add user to track
+    == slim :add_track_user_form
+
+  fieldset
+    legend Remove user from track
+    == slim :delete_track_user_form
+
   == slim :join_requests

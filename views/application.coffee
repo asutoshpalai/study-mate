@@ -50,7 +50,7 @@ $ ->
     )
     return false
 
-  $('#addtrackuser').submit (event) ->
+  $('#addtrackuser, #deltrackuser').submit (event) ->
     event.preventDefault()
     form = $(this)
     $.post(

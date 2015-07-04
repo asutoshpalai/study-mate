@@ -76,6 +76,17 @@ class TrackController < Base
     slim :users_list, :layout => false
   end
 
+  delete '/:id/users' do
+    protected!
+    unauthorized! unless admin?
+    find_track
+    tid = @track.id
+    uid = Users.all(:username => params[:username])[0].id
+    delete_user_from_track tid, uid
+    @users = @track.users.all
+    slim :users_list, :layout => false
+  end
+
   post '/:id/post' do
     protected!
     @msg = Msgs.create(:track_id => params[:id], :msg => clean_input(params[:msg]), :user_id => user.id)

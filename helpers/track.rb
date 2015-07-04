@@ -31,16 +31,15 @@ module TrackHelpers
     t[:name] = clean_input t[:name]
     t[:description] = clean_input t[:description]
     @track = Track.create(t)
-    puts @track.inspect
     UserRelation.create(:track_id => @track.id, :users_id => user.id, :relation => 1)
   end
 
   def add_user_to_track(tid, uid, role = 2)
-    if Track.get(tid).admin.id != user.id
-      unauthorized!
-    end
-
     UserRelation.create(:track_id => @track.id, :users_id => uid, :relation => role)
+  end
+
+  def delete_user_from_track(tid, uid)
+    UserRelation.all(:track_id => @track.id, :users_id => uid)[0].destroy
   end
 
   def get_msgs(id = nil)

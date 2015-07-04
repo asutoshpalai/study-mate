@@ -1,0 +1,4 @@
+form#deltrackuser action="/tracks/#{@track.id}/users" method="post"
+  input type="hidden" name="_method" value="DELETE"
+  input type="text" name="username" placeholder="Username"
+  input type="submit" value="Remove user"
