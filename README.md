@@ -8,6 +8,9 @@ I created this project to have some experience of ruby, with sinatra in the summ
   - MVC _like_ structure ( actually there are no models at present. Form the beggining the work of models was distributed between helpers and controllers and I didn't get time to refactor the code)
   - Server side pushes
   - Using data-mapper ruby ORM
+  - Uses slim as template engine
+  - Uses coffe-script
+  - scss for css pre-processing
   - Uses SDLite db, but can be very easily shifted because of ORM.
   - A strapup file which integrates a lot of things.
   - Automatic detection of helpers
