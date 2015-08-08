@@ -6,7 +6,7 @@ gem "sass"
 gem "dm-core"
 gem "dm-migrations"
 gem "thin"
-gem "coffee-scripts"
+gem "coffee-script"
 gem "therubyracer"
 gem "pg", :group => :production
 gem "dm-postgres-adapter", :group => :production
