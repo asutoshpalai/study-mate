@@ -1,5 +1,5 @@
 require 'sinatra/base'
-require 'sinatra/reloader'
+require 'sinatra/reloader' if Sinatra::Base.development?
 require 'slim'
 require 'sinatra/flash'
 require 'v8'
