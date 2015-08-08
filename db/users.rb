@@ -7,7 +7,7 @@ class Users
   property :id, Serial
   property :username, String, :unique => true, :required => true
   property :name, String, :required => true
-  property :pass, String, :required => true
+  property :pass, String, :length=>64, :required => true
   property :signed_up_at, DateTime, :default => DateTime.now
 
   has n, :user_relations
